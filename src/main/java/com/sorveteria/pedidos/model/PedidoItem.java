@@ -2,41 +2,37 @@ package com.sorveteria.pedidos.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "pedidos")
+@Table(name = "item_do_pedido")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Pedido {
+@AllArgsConstructor
+public class PedidoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private Long usuario;
+    @Positive
+    private Integer quantidade;
 
     @NotNull
-    private Long cliente;
+    private Long alimento;
+
+    @ManyToOne(optional=false)
+    @JoinColumn(name = "pedido", referencedColumnName = "id")
+    private Pedido pedido;
 
     @NotNull
-    private LocalDateTime dataHora ;
-
-    @NotNull
-    private BigDecimal valorTotal;
-
-    @NotNull
-    @OneToMany(cascade=CascadeType.PERSIST, mappedBy="pedido")
-    private List<PedidoItem> itens = new ArrayList<>();
+    private BigDecimal valorUnitario;
 }

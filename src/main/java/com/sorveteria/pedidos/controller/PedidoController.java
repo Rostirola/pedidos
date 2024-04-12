@@ -1,6 +1,7 @@
 package com.sorveteria.pedidos.controller;
 
 import com.sorveteria.pedidos.dto.PedidoDto;
+import com.sorveteria.pedidos.dto.PedidoItemDto;
 import com.sorveteria.pedidos.service.PedidoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +29,7 @@ public class PedidoController {
         return pedidoService.obterTodos(paginacao);
     };
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<PedidoDto> detalhes(@PathVariable @NotNull Long id) {
         return ResponseEntity.ok(pedidoService.obterPorId(id));
     }
@@ -41,19 +42,8 @@ public class PedidoController {
         return ResponseEntity.created(endereco).body(pedido);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<PedidoDto> atualizar(@PathVariable @NotNull Long id, @RequestBody @Valid PedidoDto dto) {
         return ResponseEntity.ok(pedidoService.atualizaPedido(id, dto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<PedidoDto> remover(@PathVariable @NotNull Long id) {
-        pedidoService.excluirPedido(id);;
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/porta")
-    public String retornaPorta(@Value("${local.server.port}") String porta) {
-        return String.format("Requisição respondida pela instância executando na porta %s", porta);
     }
 }
